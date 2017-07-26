@@ -1,0 +1,21 @@
+wordpress的安装与连接到database
+一，安装php7.0：
+
+1.往apt中导入源，用指令sudo apt-get install php7.0 下载并安装php，登录http://wordpress/readme.html验证php的安装。
+
+二，安装wordpress
+
+2.在官网上下载，用命令 sudo tar -xvf wordpress-4.7.4-zn_CH.tar.gz -C /var/www/html 将其解压到/var/www/html/中。
+
+3.用sudo apt-get install libapache2-mod-php(+tab键)，安装php的服务器对apache2的>支持。若在其中找到php7.0-mysql则可用指令sudo apt-get install php-mysql来安装php的数据库支持
+
+4.用命令sudo apache2ctl restart 重启服务器，用sudo vim /etc/apache2/sites-enabled/000-default.conf命令打开此配置文件，在最上方写入ServerName  127.0.1.1即可。
+
+三，连接mysql和php
+
+连接到服务器端并创建一个数据库wordpress，把它作为该博客的数据库。
+
+6.点击登录wp-admin/install.php，进入/var/www/html/用命令sudo vim wp-config.php创
+建该文件，并把数据库连接信息写入到wp-config.php文件中，用sudo chmod 777 wp-config.php将其权限修改为完全公开。
+
+7.注册博客，完成。
