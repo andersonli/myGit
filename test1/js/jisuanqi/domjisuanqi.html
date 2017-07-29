@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+      <head>
+           //dom计算器
+	   <meta charset='utf-8'>
+           <title>计算器</title>
+      </head>
+      <body>
+           <div id='div1'>
+           </div>
+           <script>
+                  'use strict'
+                  var p1=document.createElement('p');
+                  var node=document.createTextNode('计算器');
+                  p1.appendChild(node); 
+                  var div=document.getElementById('div1');
+                  div.appendChild(p1);
+                  var input=document.createElement('input');
+                  div.appendChild(input);
+                  var button=document.createElement('button');
+                  var go=document.createTextNode('计算');
+                  button.appendChild(go);
+                  div.appendChild(button);
+                  var div2=document.createElement('div');
+                  var arr=[7,8,9,'Del',4,5,6,'/',1,2,3,'*',0,'-','+','.'];
+                  var arr1=new Array();
+                  var arr2=new Array();
+ 
+                  for(var i=0;i<arr.length;i++)
+                      { 
+                       arr1[i]=document.createElement('button');
+                       arr1[i].onclick=function(){
+                          var ele=document.getElementsByTagName('input')[0].value=this.innerHTML;
+ 
+            }
+                       arr2[i]=document.createTextNode(arr[i]);
+                       div2.appendChild(arr1[i]);
+                       arr1[i].appendChild(arr2[i]);
+                      }
+                  div.appendChild(div2);
+           </script>
+ 
+      </body>
+</html>
+

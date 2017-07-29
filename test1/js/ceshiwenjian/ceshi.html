@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=utf-8 />
+    <title>排序</title>
+    <script>
+        window.onload = function (){
+                document.getElementById("paixu").onclick=function(){
+                var arr=document.getElementById("input").value.split(',');
+                arr.sort(sortNumber);
+                document.getElementById('dis').innerHTML=arr.join(',');
+            }
+        function sortNumber(a,b){
+            return a-b;
+        }
+    </script>
+    <style>
+        #clock {
+            font:blod 24pt sans;
+            background: #ddf;
+            padding: 10px;
+            border: solid black 2px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>排序</h1>
+    <div><input id="input"></input><button id="paixu">排序</button></div>
+    <div><span id="dis"></span></div>
+</body>
+</html>
+
