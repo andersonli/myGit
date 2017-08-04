@@ -1,0 +1,168 @@
+function ListNode(data)
+{
+    this.data=data;
+    this.next=null;
+}
+ 
+function LinkedList()
+{
+    this.list_header=null;
+}
+ 
+LinkedList.prototype.print_link=function ()
+{
+    var p=this.list_header;
+    while(p!=null)
+    {
+        console.log(p.data);
+        p=p.next;
+    }
+}
+ 
+LinkedList.prototype.insert_head_node=function(data)
+{
+    var temp=new ListNode(data);
+    temp.next=this.list_header;
+    this.list_header=temp;
+    return this.list_header;
+}
+ 
+LinkedList.prototype.insert_end_node=function(data)
+{
+    var temp=new ListNode(data);
+    var p=this.list_header;
+    if(p==null)
+    {
+        this.list_header=temp;
+    }
+    else
+    {
+        while(p.next!=null)
+        {
+            p=p.next;
+        }
+        p.next=temp;
+    }
+    return this.list_header;
+}
+ 
+LinkedList.prototype.insert_index_node=function(index,data)
+{
+    var temp=new ListNode(data);
+    var p=this.list_header;
+    var p2=this.list_header;
+    for(var i=0;i<index;i++)
+    {
+        p2=p;
+        p=p.next;
+    }
+    if(p==p2)
+    {
+        temp.next=this.list_header;
+        this.list_header=temp;
+    }
+    else
+    {
+        temp.next=p;
+        p2.next=temp;
+    }
+    return this.list_header;
+}
+LinkedList.prototype.insert_byorder_node=function(data)
+{
+    var temp=new ListNode(data);
+    var p=this.list_header;
+    var p2=this.list_header;
+ 
+    while(p!=null&&(data>p.data))
+    {
+        p2=p;
+        p=p.next;
+    }
+    if(p==p2)
+    {
+        temp.next=this.list_header;
+        this.list_header=temp;
+    }
+    else
+    {
+        temp.next=p;
+        p2.next=temp;
+    }
+    return this.list_header;
+}
+LinkedList.prototype.search_node=function(data)
+{
+    var p=this.list_header;
+    while(p!=null&&p.data!=data)
+    {
+        p=p.next;
+    }
+    if(p==null)
+    {
+        return null;
+    }
+    else
+    {
+        return p;
+    }
+}
+ 
+LinkedList.prototype.del_node=function(data)
+{
+    var p=this.list_header;
+    var p2=this.list_header;
+ 
+    while(p!=null&&p.data!=data)
+    {
+        p2=p;
+        p=p.next;
+    }
+    if(p==null)
+    {
+        return null;
+    }
+    else
+    {
+        if(p==p2)
+        {
+            this.list_header=p.next;
+        }
+        else
+        {
+            p2.next=p.next;
+        }
+    }
+    return p;
+}
+ 
+ 
+window.onload=function()
+{
+    var link=new LinkedList();
+ 
+    link.insert_byorder_node(1);
+    link.insert_byorder_node(9);
+    link.insert_byorder_node(7);
+    link.insert_byorder_node(8);
+    link.insert_byorder_node(3);
+    link.print_link();
+    if(link.del_node(8)!=null)
+    {
+        console.log("找到了");
+    }
+    else
+    {
+        console.log("没有该节点");
+    }
+    link.print_link();
+    if(link.del_node(1)!=null)
+    {
+        console.log("找到了");
+    }
+    else
+    {
+        console.log("没有该节点");
+    }
+    link.print_link();
+}
