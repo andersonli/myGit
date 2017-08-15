@@ -1,33 +1,43 @@
-var shuzu;
-var inputs = 'global';
+var shuzu;//定义字符串，接收读取到的数据
+var inputs = 'global';//定义输入数组，全局变量
+//var biaozhun=biaozhunhua(inputs);
+//var string=shuchu(biaozhun);
 var fs = require('fs');
+var data = fs.readFileSync('inputs.txt', 'utf-8');//同步读取文件内容
 
-var data = fs.readFileSync('inputs.txt', 'utf-8');
-            //console.log(data);
-            shuzu = data;
-            //console.log(shuzu);
-            inputs = shuzu.split(" ");
-            console.log(inputs);
-        
-//var inputs = [];
-//var inputs = shuzu.split(" ");
-//window.onload=function () 
-//function writefs()
-//{
+//console.log(data);
+shuzu = data;//取data的值
+console.log(shuzu);
+inputs = shuzu.split(" ");//按空格分成字符串数组
+//shuzu.indexOf('\n');
+inputs.pop();//删除数组的最后一个元素
+var n = inputs[0].length;//返回数组首元素的字符串长度
+inputs.push(shuzu.substring(shuzu.length-(n+1),shuzu.length-1));//截取字符串的指定部分加入数组。
+console.log(inputs);
 
-    var biaozhun=biaozhunhua(inputs);
-    var string=shuchu(biaozhun);
-    console.log(string);//控制台输出
-    /*var fs = require('fs');
-    var  data = 'ss';
+var biaozhun=biaozhunhua(inputs);
+var string=shuchu(biaozhun);
+
+function writefs(){//写入文件
+    var fs = require('fs');
+    var  data = string;//取string的值
+    //console.log(string);
+    //console.log(data);
     fs.writeFile('item.txt', data, function(err){
         if(err){
             console.log(err);
         }else{
             console.log('ok');
         }
-    });*/
-      function printTime()
+    });
+}
+
+writefs();//调用
+//var biaozhun=biaozhunhua(inputs);
+//var string=shuchu(biaozhun);
+console.log(string);//控制台输出
+
+    function printTime()
     {//打印现在时刻的函数
            var dateDigitToString = function (num){
               return num < 10 ? '0' + num : num;
@@ -123,8 +133,9 @@ var data = fs.readFileSync('inputs.txt', 'utf-8');
           sum=sum-save;
           string+='----------------------\n总计:'+sum.toFixed(2)+'(元)\n节省:'+save.toFixed(2)+'(元)\n**********************';
           return string;
+          
       }
-      function writefs(data,item){
+      /*function writefs(string){
         var fs = require('fs');
         var  data = string;
         fs.writeFile('item.txt', data, function(err){
@@ -134,9 +145,8 @@ var data = fs.readFileSync('inputs.txt', 'utf-8');
                 console.log('ok');
             }
         });
-      }
+      }*/
 
-  //}
   function loadAllItems() {
       return [
           {
@@ -189,4 +199,4 @@ var data = fs.readFileSync('inputs.txt', 'utf-8');
               ]
           }
       ];
-  }
+}
