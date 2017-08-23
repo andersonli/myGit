@@ -1,0 +1,24 @@
+{
+   "user1" : {
+      "name" : "mahesh",
+	  "password" : "password1",
+	  "profession" : "teacher",
+	  "id": 1
+   },
+   "user2" : {
+      "name" : "suresh",
+	  "password" : "password2",
+	  "profession" : "librarian",
+	  "id": 2
+   },
+   "user3" : {
+      "name" : "ramesh",
+	  "password" : "password3",
+	  "profession" : "clerk",
+	  "id": 3
+   }
+}
+INSERT INTO userdata VALUES('mahesh','password1','teacher',1),('suresh','password2','librarian',2),('ramesh','password3', 'clerk',3);
+
+ALTER  TABLE  userdata  MODIFY user_password INT (20);
+CREATE TABLE userdata(user_name CHAR(20) NOT NULL,user_password CHAR(20) NOT NULL,user_profession CHAR(20) NOT NULL,user_id INT(4) NOT NULL PRIMARY KEY AUTO_INCREMENT);

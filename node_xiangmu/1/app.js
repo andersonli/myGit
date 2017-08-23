@@ -12,150 +12,108 @@ var users = require('./routes/users');
 
 var app = express();
 
+var TEST_DATABASE = 'user_data';
+var TEST_TABLE = 'userdata';
+//lianjie mysql
+var mysql = require('mysql');
+var connection = mysql.createConnection({
+    host:'127.0.0.1',
+    user:'root',
+    password:'root',
+    port:'3306',
+    database:TEST_DATABASE,
+});
+//connection.connect();
+
 //获取用户列表：
 app.get('/listUsers', function (req, res) {
-  /*fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
-      console.log( data );
-      res.end( data );*/
-      fs.readFile(__dirname + '/' + 'users.json','utf8',function(err,data){
-        
-        data = JSON.parse(data);
-        var user;
-        var id = url.parse(req.url,true).query.id;
-        
+  //connection.connect();
+  
         if(id == undefined){
-          //user = data;
-          //res.render('use',{table:data});
-        }else{
-          user = data["user" + id];
-        }
-        //res.end(JSON.stringify(user));
-        res.render('use',{table:data});
+        var sql = 'SELECT * FROM userdata';
+        var id = url.parse(req.url,true).query.id;
+        connection.query(sql,function(err,result){
+          if(err){
+            console.log('err');
+            return;
+          }
+          
+          res.render('use',{table:result});
+        });
+      }else
+      {
+        var sql = 'SELECT * FROM userdata WHERE user_id='+id;
+        connection.query(sql,function(err,result){
+          if(err){
+            console.log('err');
+            return;
+          }
+         
+          res.render('use',{table:result});
+        });
+      }
 
         
-
-
   });
-});
+//});
 
 
 
 //添加的新用户数据
 var user = {
-  "user4" : {
-     "name" : "mohit",
-     "password" : "password4",
-     "profession" : "teacher",
-     "id": 4
+  "user2" : {
+     "name" : "suresh",
+     "password" : "password2",
+     "profession" : "librarian",
+     "id": 2
   }
 }
-
+var addsql = 'INSERT INTO userdata(user_name,user_password,user_profession,user_id) VALUES(?,?,?,?)';
+//var addsqlparams = [user.user2.name,user.user2.password,user.user2.profession,user.user2.id];
 app.get('/addUser', function (req, res) {
-
-  fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
-      data = JSON.parse( data );
-      data["user4"] = user["user4"];
-      console.log( data );
-      res.render('use',{table:data});
-      res.end( JSON.stringify(data));
-
-      fs.writeFile(__dirname + '/' + 'users.json',JSON.stringify(data),function(err,data){
+  //connection.connect();
+  
+      //var addsql = 'INSERT INTO userdata(name,password,prefession,id) VALUES(?,?,?,?)';
+      var addsqlparams = ['suresh','password2','librarian',2];
+      connection.query(addsql,addsqlparams,function(err,result){
         if(err){
           console.log(err);
-          res.end(err);
-        }else{
-          console.log(data);
-          console.log('ok');
-          res.end(data);
-
-
-          //res.render('use',{table:data});
+          return;
         }
-      
+        var sql = 'SELECT * FROM userdata';
+        connection.query(sql,function(err,result){
+          if(err){
+            console.log('err');
+            //return;
+            
+          }
+          res.render('use',{table:result});
+        });
+          //res.render('use',{table:result});
       });
-  });
+      
 });
 
 
 //指定id删除用户
-var id = 2;
+var delsql = 'DELETE FROM userdata WHERE user_id = 2';
 app.get('/deleteUser', function (req, res) {
-  
-  fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
-    data = JSON.parse( data );
-    delete data["user" + 2];
-    
-    console.log( data );
-    res.render('use',{table:data});
-    res.end( JSON.stringify(data));
+ 
 
 
-  fs.writeFile(__dirname + '/' + 'users.json',JSON.stringify(data),function(err,data){
+//var delsql = 'DELETE FROM userdata where id = 2';
+connection.query(delsql,function (err,result) {
     if(err){
-      console.log(err);
-      res.end(err);
-    }else{
-      console.log(data);
-      console.log('ok');
-      res.end(data);
-
-    }
-  
-  });
-});
-});
-
-
-//指定id显示用户详情
-/*app.get('/:id',function(req,res){
-
-  fs.readFile(__dirname + '/' + 'users.json','utf8',function(err,data){
-    
-    data = JSON.parse(data);
-    var user;
-    var id = url.parse(req.url,true).query.id;
-    
-    if(id == undefined){
-      user = data;
-    }else{
-      user = data["user" + id];
-    }
-    
-    res.end(JSON.stringify(user));*/
-
-
-
-  /*fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
-      data = JSON.parse( data );
-      var user = data["user" + req.params.id] 
-      console.log( user );
-      res.end( JSON.stringify(user));
-
-
-    fs.writeFile(__dirname + '/' + 'users.json',JSON.stringify(data),function(err,data){
-      if(err){
         console.log(err);
-        res.end(err);
-      }else{
-        console.log(data);
-        console.log('ok');
-        res.end(data);
-      }
-    
-    });
-  });
+        return;
+    }
+    //console.log('----------删除-------------');
+    //console.log(result);
+    res.render('use',{table:result});
 });
-*/
 
-
-
-/*var server = app.listen(8081, function () {
-
- var host = server.address().address
- var port = server.address().port
- console.log("应用实例，访问地址为 http://%s:%s", host, port)
-
-})*/
+});
+//connection.end();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -163,6 +121,7 @@ app.set('view engine', 'jade');
 app.get('/',function(req,res){
 
       res.render('use');
+      
 });
 
 // uncomment after placing your favicon in /public
