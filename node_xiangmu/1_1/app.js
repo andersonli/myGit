@@ -6,213 +6,120 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fs = require('fs');
 var url = require('url');
-
+var mysql = require('mysql');
 var index = require('./routes/index');//index exports
 var users = require('./routes/users');
 
 var app = express();
 
-var TEST_DATABASE = 'user_data';
-var TEST_TABLE = 'userdata';
-//lianjie mysql
-var mysql = require('mysql');
+
+//链接数据库
 var connection = mysql.createConnection({
-    host:'127.0.0.1',
-    user:'root',
-    password:'root',
-    port:'3306',
-    database:TEST_DATABASE,
+    host: 'localhost',
+    user: 'root',
+    password: 'root',
+    port: '3306',
+    database: 'user_data'
 });
-//connection.connect();
 
-//获取用户列表：
-app.get('/listUsers', function (req, res) {
-  //connection.connect();
-  /*fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
-      console.log( data );
-      res.end( data );*/
-      //fs.readFile(__dirname + '/' + 'users.json','utf8',function(err,data){
-        if(id == undefined){
-        var sql = 'SELECT * FROM userdata';
-        var id = url.parse(req.url,true).query.id;
-        connection.query(sql,function(err,result){
-          if(err){
-            console.log('err');
-            return;
-          }
-          //console.log('-----------------查询----------------');
-          //console.log(result);
-          //console.log('-----------------查询结束----------------');
-          res.render('use',{table:result});
-        });
-      }else
-      {
-        var sql = 'SELECT * FROM userdata WHERE user_id='+id;
-        connection.query(sql,function(err,result){
-          if(err){
-            console.log('err');
-            return;
-          }
-          //console.log('-----------------查询----------------');
-          //console.log(result);
-          //console.log('-----------------查询结束----------------');
-          res.render('use',{table:result});
-        });
-      }
-
-        /*data = JSON.parse(data);
-        var user;
-        var id = url.parse(req.url,true).query.id;
-        
-        if(id == undefined){
-          //user = data;
-          //res.render('use',{table:data});
-        }else{
-          user = data["user" + id];
+//数据库结果转JSON,并且发送
+function result2json(result, str, res) {
+    var j_data = {};
+    for (var i = 0; i < result.length; i++) {
+        j_data['user' + i] = {
+            'id': result[i].user_id,
+            'name': result[i].user_name,
+            'password': result[i].user_password,
+            'profession': result[i].user_profession
         }
-        //res.end(JSON.stringify(user));*/
-        //res.render('use',{table:result});
-
-        
-
-        //connection.end();
-  });
-//});
-
-
-
-//添加的新用户数据
-var user = {
-  "user2" : {
-     "name" : "suresh",
-     "password" : "password2",
-     "profession" : "librarian",
-     "id": 2
-  }
+    }
+    res.render("list", { title: str, juser: j_data });
 }
-var addsql = 'INSERT INTO userdata(user_name,user_password,user_profession,user_id) VALUES(?,?,?,?)';
-//var addsqlparams = [user.user2.name,user.user2.password,user.user2.profession,user.user2.id];
-app.get('/addUser', function (req, res) {
-  //connection.connect();
-  /*fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
-      data = JSON.parse( data );
-      data["user2"] = user["user2"];
-      console.log( data );
-      res.render('use',{table:data});
-      res.end( JSON.stringify(data));*/
-      //var addsql = 'INSERT INTO userdata(name,password,prefession,id) VALUES(?,?,?,?)';
-      var addsqlparams = ['suresh','password2','librarian',2];
-      connection.query(addsql,addsqlparams,function(err,result){
-        if(err){
-          console.log(err);
-          return;
-        }
-        //console.log('-----------------新增成功----------------');
-        //console.log(result);
-        //console.log('-----------------结束----------------');
-        res.render('use',{table:result});
-      });
-      //res.render('use',{table:result});
-      /*fs.writeFile(__dirname + '/' + 'users.json',JSON.stringify(data),function(err,data){
-        if(err){
-          console.log(err);
-          res.end(err);
-        }else{
-          console.log(data);
-          console.log('ok');
-          res.end(data);
 
-
-          //res.render('use',{table:data});
-        }
-      
-      });
-  });*/
-  //connection.end();
-});
-
-
-//指定id删除用户
-var delsql = 'DELETE FROM userdata WHERE user_id = 2';
-app.get('/deleteUser', function (req, res) {
-  //connection.connect();
-  /*fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
-    data = JSON.parse( data );
-    delete data["user" + 2];
-    
-    console.log( data );
-    res.render('use',{table:data});
-    res.end( JSON.stringify(data));
-
-
-  fs.writeFile(__dirname + '/' + 'users.json',JSON.stringify(data),function(err,data){
-    if(err){
-      console.log(err);
-      res.end(err);
-    }else{
-      console.log(data);
-      console.log('ok');
-      res.end(data);
-
-    }
-  
-  });
-});*/
-
-
-//var delsql = 'DELETE FROM userdata where id = 2';
-connection.query(delsql,function (err,result) {
-    if(err){
-        console.log(err);
-        return;
-    }
-    //console.log('----------删除-------------');
-    //console.log(result);
-    res.render('use',{table:result});
-});
-
-});
-//connection.end();
-
-
-
-
+// 设置模板引擎
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.get('/',function(req,res){
 
-      res.render('use');
+    res.render("list", { title: str, juser: j_data });
       
 });
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+//设置路由
+app.get('/listUsers', function(req, res) {
+    var id = url.parse(req.url, true).query.id;
+    //查询数据
+    var sql = 'SELECT * FROM userdata';
+    if (id != undefined) {
+        sql += ' WHERE user_id=' + id;
+    }
+    connection.query(sql, function(err, result) {
+        if (err) {
+            console.log('[SELECT ERROR] - ', err.message);
+            console.log(err);
+            
+        }
+        result2json(result, '查询成功', res);
+    });
+});
+
+//添加的新用户数据
+var user = {
+    "user5": {
+        "id": 5,
+        "name": "damjlowills",
+        "password": "passuiword5",
+        "profession": "firehkman"
+    }
+};
+
+app.get('/addUser', function(req, res) {
+    var sql = 'insert into userdata (user_id,user_name,user_password,user_profession) values (?,?,?,?)';
+    var sqlParams = [user["user5"].id, user["user5"].name, user["user5"].password, user["user5"].profession];
+    connection.query(sql, sqlParams, function(err, result) {
+        //插入执行后只接显示所有信息,err信息返回
+        var str = (err ? err.code : '插入成功');
+        sql = "select * from userdata";
+        connection.query(sql, function(err, result) {
+            if (err) {
+                console.log('[SELECT ERROR] - ', err.message);
+                return;
+            }
+            result2json(result, str, res);
+        });
+    })
+});
+
+app.get('/deleteUser', function(req, res) {
+
+    // First read existing users.
+    var id = url.parse(req.url, true).query.id;
+    var sql = 'DELETE FROM userdata where user_id=' + id;
+    connection.query(sql, function(err, result) {
+        if (err) {
+            console.log(err);
+            return;
+        } else {
+            console.log('delete success');
+            sql = "select * from userdata";
+            connection.query(sql, function(err, result) {
+                if (err) {
+                    console.log('[SELECT ERROR] - ', err.message);
+                    return;
+                }
+                result2json(result, '删除成功', res);
+            });
+        }
+    })
+});
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/info', index);
 
-app.use('/', index);
-app.use('/users', users);
+var server = app.listen(8081, function() {
+    var host = server.address().address;
+    var port = server.address().port;
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    console.log('app listening at http://%s:%s', host, port);
 });
-
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
-
 module.exports = app;

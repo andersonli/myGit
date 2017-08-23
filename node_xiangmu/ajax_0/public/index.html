@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script>
+        function selcetInfoByAjax() {
+            var xmlhttp;
+            if (window.XMLHttpRequest) {
+                //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+                xmlhttp = new XMLHttpRequest();
+            } else {
+                // IE6, IE5 浏览器执行代码
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    var table=xmlhttp.responseText;
+
+                    document.getElementById("myDiv").innerHTML = xmlhttp.responseText;
+                    // document.getElementById("myDiv").innerHTML = "hello world"
+                }
+            }
+            xmlhttp.open("GET", "/select", true);
+            xmlhttp.send();
+        }
+        function addInfoByAjax() {
+            var xmlhttp;
+            if (window.XMLHttpRequest) {
+                //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+                xmlhttp = new XMLHttpRequest();
+            } else {
+                // IE6, IE5 浏览器执行代码
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    var table=xmlhttp.responseText;
+
+                    document.getElementById("myDiv").innerHTML = xmlhttp.responseText;
+                    // document.getElementById("myDiv").innerHTML = "hello world"
+                }
+            }
+            xmlhttp.open("GET", "/add", true);
+            xmlhttp.send();
+        }
+        function deleteInfoByAjax() {
+            var xmlhttp;
+            if (window.XMLHttpRequest) {
+                //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+                xmlhttp = new XMLHttpRequest();
+            } else {
+                // IE6, IE5 浏览器执行代码
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    var table=xmlhttp.responseText;
+
+                    document.getElementById("myDiv").innerHTML = xmlhttp.responseText;
+                    // document.getElementById("myDiv").innerHTML = "hello world"
+                }
+            }
+            xmlhttp.open("GET", "/delete", true);
+            xmlhttp.send();
+        }
+    </script>
+</head>
+
+<body>
+    <div >
+        <h2>使用 AJAX 实现从数据库与客户交互</h2>
+    </div>
+    <div>
+        <button type="button" onclick="selcetInfoByAjax()">显示用户</button>
+        <button type="button" onclick="addInfoByAjax()">添加用户</button>
+        <button type="button" onclick="deleteInfoByAjax()()">删除用户</button>
+    </div>
+    <p id="myDiv"></p>
+</body>
+
+</html>
