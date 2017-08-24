@@ -36,7 +36,7 @@ function data_to_JSON(data) {
           'id': data[i].user_id
       };
   }
-  return array;
+  return JSON.stringify(array);
 }
 
 module.exports = router;

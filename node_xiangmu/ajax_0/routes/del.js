@@ -15,7 +15,7 @@ router.get('/', function(req, res) {
     var del = 'delete from userdata where user_id=' + id.toString();
     connection.query(del, function (err, result) {
         if (err) {
-            console.log('err');
+            console.log(err);
         }
         console.log("delete ok");
     });
