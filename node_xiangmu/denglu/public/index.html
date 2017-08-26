@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>登录页面</title>
+        
+        <script>
+
+           
+            /*var app = new Vue({
+                el: '#app',
+                data: {
+                username: ''
+                userpassword: ''
+                }
+            })*/
+
+
+                function denglu() {
+
+           var username = document.getElementById("name").value;
+           var userpassword = document.getElementById("password").value;
+            var xmlhttp;
+            if (window.XMLHttpRequest) {
+                //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+                xmlhttp = new XMLHttpRequest();
+            } else {
+                // IE6, IE5 浏览器执行代码
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    var table=xmlhttp.responseText;
+                    alert(xmlhttp.responseText);
+                    
+                    document.getElementById('login').innerHTML = xmlhttp.responseText;
+                   
+                }
+            }
+            var url = '/denglu?uname=' + username +'&upassword=' + userpassword;
+            // console.log(url);
+            xmlhttp.open("GET", url, true);
+            xmlhttp.send();
+        }
+
+        /*$('#denglu').click(function(){
+            $.ajax({
+                url:'/denglu',
+                type:'GET',
+                data:{
+                    name:$('#username').val(),
+                    password:$('#')
+                }
+            });
+        });*/
+
+        </script>
+
+  </head>
+  <body>
+
+          <div>
+            <legend class="">表单名</legend>
+          </div>
+       
+              <label>用户名</label>
+              <div class="controls">
+                <input type="text" id="name" v-model='username'>
+                <p>开头不能为下划线</p>
+                <p>{{username}}</p>
+              </div>
+            </div>
+
+        <div>
+    
+              <!-- Text input-->
+              <label>密码</label>
+              <div>
+                <input type="text" id="password" v-model='userpassword'>
+                <p>不能少于六位</p>
+                <p>{{userpassword}}</p>
+              </div>
+            </div>
+    
+        <div>
+              <label>点击登录</label>
+              
+    
+              <!-- Button -->
+              <div>
+                <button onclick="denglu()">登录</button>
+                <p id='login'></p>   
+            </div>
+            </div>
+    
+        </body>
+</html>
